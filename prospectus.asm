@@ -204,11 +204,191 @@ fourthSsSub3 db 10, 9, 32,32, "| REM 403     | REM Professional Practice        
 border98 db 10, 9,32, 32,"------------------------------------------------------------------------------------------------------------------------------------------", 0
 total8 db 10, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9,"|   Total Units   |  9  |  0  |   9   |", 0
 border99 db 10, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9,"---------------------------------------", 0
+
+
+;=================================================================================
+; APPLYING UNITS
+;==============================
+
+
+; FIRST YEAR FIRST SEM UNITS
+;==============================
+
+ACCBP100 db 3,0
+GE8 db 3,0
+GE2 db 6,0
+GE15 db 3,0
+GE3 db 3,0
+BA100 db 3,0
+PAHF1 db 2,0
+NSTP1 db 3,0
+
+
+; FIRST YEAR SECOND SEM UNITS
+;==============================
+GE1 db 3,0
+GE5 db 3,0
+ug1 db 6,0
+GE4 db 3,0
+REM112 db 3,0
+REM122 db 3,0
+PAHF2 db 2,0
+NSTP2 db 3,0
+
+
+
+
+;=================================================================================
+;CALCULATIONS
+;==============================
+
+
+
+
+
+
+;=================================================================================
+
+;WRONG VALUE
+;==============================
+wrongValue db "You have entered a wrong value please try again", 10,0
+
+
+
+;QUESTION NAME PROMPT
+;==============================
+
+fname db 50 dup(?)
+
+enterName db "Enter Name -: ",0
+
+
+
+;QUESTION YEAR AND SEMESTER PROMPT
+;==============================
+
+year db 50 dup(?)
+semester db 50 dup(?)
+
+enterYear db "Enter Year -: ",0
+enterSemester db "Enter Semester -: ",0
+
+
+
+;QUESTION TO ENROLL / VIEW / EXIT
+;==============================
+
+choose db 50 dup(?)
+
+enterChoose db "Enter (e) to Enroll",10,"Enter (v) to View",10,"Enter (x) to Exit",10,"-: ",0
+
+
+
+;QUESTION TO CONITNUE VIEWING
+;==============================
+
+continueView db 50 dup(?)
+
+enterContinueView db 10,"Do you want to view another year and sem? [Y / N] -: ",0
+
+
+
 .code
 start:
 
- invoke ClearScreen
-; Display the header
+ call ClearScreen
+
+; INITALIZE NAME QUESTION.
+;==============================
+invoke StdOut, addr enterName
+invoke StdIn, addr fname, 50
+
+
+; GET RESULT IF WANT TO VIEW OR ENROLL
+;==============================
+result: 
+    call ClearScreen
+    invoke StdOut, addr enterChoose
+    invoke StdIn, addr choose, 50
+
+    cmp choose, "e"
+        je sem
+    cmp choose, "v"
+        je sem
+    cmp choose, "x"
+        je exitProgram
+    jmp result
+    ret
+    
+
+; GET YEAR AND SEM FUNCTION
+;==============================
+sem:
+    call ClearScreen
+    invoke StdOut, addr enterYear
+    invoke StdIn, addr year, 3
+
+    invoke StdOut, addr enterSemester
+    invoke StdIn, addr semester, 3
+
+
+    ; FIRST YEAR
+    ;=========
+    
+    .if year =='1'
+        .if semester=='1'
+            je fyfs
+        .elseif semester=='2'
+            je fyss
+        .endif
+
+
+
+    ; SECOND YEAR
+    ;=========
+    .elseif year =='2'
+        .if semester=='1'
+            je syfs
+        .elseif semester=='2'
+            je syss
+        .endif
+
+
+
+    ; THIRD YEAR
+    ;=========
+    .elseif year =='3'
+        .if semester=='1'
+            je tyfs
+        .elseif semester=='2'
+            je tyss
+        .elseif semester=='s'
+            je tys
+        .endif
+
+
+
+    ; FOURTH YEAR
+    ;=========
+    .elseif year =='4'
+        .if semester=='1'
+            je ftyfs
+        .elseif semester=='2'
+            je ftyss
+        .endif
+    .endif
+    jmp sem
+    ret
+
+;=================================================================================
+
+
+
+; FIRST YEAR FIRST SEM
+;==============================
+fyfs:
+    call ClearScreen
+    invoke StdOut, addr year
     invoke StdOut, addr border0
     invoke StdOut, addr header0
     invoke StdOut, addr border1
@@ -216,7 +396,7 @@ start:
     invoke StdOut, addr border2
     invoke StdOut, addr header2
     invoke StdOut, addr border3
-; Display the first year
+    
     invoke StdOut, addr border4
     invoke StdOut, addr year1
     invoke StdOut, addr border5
@@ -242,7 +422,37 @@ start:
     invoke StdOut, addr border15
     invoke StdOut, addr total1
     invoke StdOut, addr border16
+
+    invoke StdOut, addr enterContinueView
+    invoke StdIn, addr continueView, 10
+
+    .if continueView =="Y"
+        je sem
+    .elseif continueView == "y"
+        je sem
+    .elseif continueView =="N"
+        je result
+    .elseif continueView =="n"
+        je result
+    .endif
+    call ClearScreen
+    invoke StdOut, addr wrongValue
+    jmp fyfs
+    ret
+
+
+
  ; Display the second semester
+ fyss:
+    call ClearScreen
+    invoke StdOut, addr border0
+    invoke StdOut, addr header0
+    invoke StdOut, addr border1
+    invoke StdOut, addr header1
+    invoke StdOut, addr border2
+    invoke StdOut, addr header2
+    invoke StdOut, addr border3
+    
     invoke StdOut, addr border17
     invoke StdOut, addr yearOneSecondtSem
     invoke StdOut, addr borderE0 ;extension
@@ -266,7 +476,36 @@ start:
     invoke StdOut, addr border26
     invoke StdOut, addr total2
     invoke StdOut, addr border27
+
+    invoke StdOut, addr enterContinueView
+    invoke StdIn, addr continueView, 10
+
+    .if continueView =="Y"
+        je sem
+    .elseif continueView == "y"
+        je sem
+    .elseif continueView =="N"
+        je result
+    .elseif continueView =="n"
+        je result
+    .endif
+    call ClearScreen
+    invoke StdOut, addr wrongValue
+    jmp fyss
+    ret
+
+
  ; Display the second year
+ syfs:
+    call ClearScreen
+    invoke StdOut, addr border0
+    invoke StdOut, addr header0
+    invoke StdOut, addr border1
+    invoke StdOut, addr header1
+    invoke StdOut, addr border2
+    invoke StdOut, addr header2
+    invoke StdOut, addr border3
+    
     invoke StdOut, addr border28
     invoke StdOut, addr year2
     invoke StdOut, addr border29
@@ -294,7 +533,36 @@ start:
     invoke StdOut, addr border40
     invoke StdOut, addr total3
     invoke StdOut, addr border41
-    ; Display the second semester
+
+    invoke StdOut, addr enterContinueView
+    invoke StdIn, addr continueView, 10
+
+    .if continueView =="Y"
+        je sem
+    .elseif continueView == "y"
+        je sem
+    .elseif continueView =="N"
+        je result
+    .elseif continueView =="n"
+        je result
+    .endif
+    call ClearScreen
+    invoke StdOut, addr wrongValue
+    jmp syfs
+    ret
+
+
+; Display the second semester
+syss:
+    call ClearScreen
+    invoke StdOut, addr border0
+    invoke StdOut, addr header0
+    invoke StdOut, addr border1
+    invoke StdOut, addr header1
+    invoke StdOut, addr border2
+    invoke StdOut, addr header2
+    invoke StdOut, addr border3
+    
     invoke StdOut, addr border42
     invoke StdOut, addr yearTwoSecondSem
     invoke StdOut, addr borderE1 ;extension
@@ -318,8 +586,37 @@ start:
     invoke StdOut, addr border51
     invoke StdOut, addr total4
     invoke StdOut, addr border52
-      ; Display the third year
-    invoke StdOut, addr border53
+
+    invoke StdOut, addr enterContinueView
+    invoke StdIn, addr continueView, 10
+
+    .if continueView =="Y"
+        je sem
+    .elseif continueView == "y"
+        je sem
+    .elseif continueView =="N"
+        je result
+    .elseif continueView =="n"
+        je result
+    .endif
+    call ClearScreen
+    invoke StdOut, addr wrongValue
+    jmp syss
+    ret
+
+
+ ; Display the third year
+ tyfs:
+      call ClearScreen
+      invoke StdOut, addr border0
+      invoke StdOut, addr header0
+      invoke StdOut, addr border1
+      invoke StdOut, addr header1
+      invoke StdOut, addr border2
+      invoke StdOut, addr header2
+      invoke StdOut, addr border3
+    
+      invoke StdOut, addr border53
       invoke StdOut, addr year3
       invoke StdOut, addr border54
       invoke StdOut, addr yearThreefirstSem
@@ -346,7 +643,36 @@ start:
       invoke StdOut, addr border65
       invoke StdOut, addr total5
       invoke StdOut, addr border66
-      ; Display the second semester
+
+      invoke StdOut, addr enterContinueView
+      invoke StdIn, addr continueView, 10
+    
+      .if continueView =="Y"
+        je sem
+      .elseif continueView == "y"
+        je sem
+      .elseif continueView =="N"
+        je result
+      .elseif continueView =="n"
+        je result
+      .endif
+      call ClearScreen
+      invoke StdOut, addr wrongValue
+      jmp tyfs
+      ret
+
+
+; Display the second semester
+tyss:
+      call ClearScreen
+      invoke StdOut, addr border0
+      invoke StdOut, addr header0
+      invoke StdOut, addr border1
+      invoke StdOut, addr header1
+      invoke StdOut, addr border2
+      invoke StdOut, addr header2
+      invoke StdOut, addr border3
+      
       invoke StdOut, addr border67
       invoke StdOut, addr yearThreeSecondSem
       invoke StdOut, addr border68
@@ -368,7 +694,35 @@ start:
       invoke StdOut, addr border76
       invoke StdOut, addr total6
       invoke StdOut, addr border77
-      ; Display the summer
+
+      invoke StdOut, addr enterContinueView
+      invoke StdIn, addr continueView, 10
+      
+      .if continueView =="Y"
+        je sem
+      .elseif continueView == "y"
+        je sem
+      .elseif continueView =="N"
+        je result
+      .elseif continueView =="n"
+        je result
+      .endif
+      call ClearScreen
+      invoke StdOut, addr wrongValue
+      jmp tyss
+      ret
+  
+; Display the summer
+tys:
+      call ClearScreen
+      invoke StdOut, addr border0
+      invoke StdOut, addr header0
+      invoke StdOut, addr border1
+      invoke StdOut, addr header1
+      invoke StdOut, addr border2
+      invoke StdOut, addr header2
+      invoke StdOut, addr border3
+      
       invoke StdOut, addr border78
       invoke StdOut, addr summer
       invoke StdOut, addr border79
@@ -376,7 +730,35 @@ start:
       invoke StdOut, addr border80
       invoke StdOut, addr summerSub1
       invoke StdOut, addr border80
-      ; Display the fourth year
+
+      invoke StdOut, addr enterContinueView
+      invoke StdIn, addr continueView, 10
+      
+      .if continueView =="Y"
+        je sem
+      .elseif continueView == "y"
+        je sem
+      .elseif continueView =="N"
+        je result
+      .elseif continueView =="n"
+        je result
+      .endif
+      call ClearScreen
+      invoke StdOut, addr wrongValue
+      jmp tys
+      ret
+
+; Display the fourth year
+ftyfs:
+      call ClearScreen
+      invoke StdOut, addr border0
+      invoke StdOut, addr header0
+      invoke StdOut, addr border1
+      invoke StdOut, addr header1
+      invoke StdOut, addr border2
+      invoke StdOut, addr header2
+      invoke StdOut, addr border3
+      
       invoke StdOut, addr border82
       invoke StdOut, addr year4
       invoke StdOut, addr border83
@@ -398,7 +780,36 @@ start:
       invoke StdOut, addr border91
       invoke StdOut, addr total7
       invoke StdOut, addr border92
-      ; Display the second semester
+
+
+      invoke StdOut, addr enterContinueView
+      invoke StdIn, addr continueView, 10
+      
+      .if continueView =="Y"
+        je sem
+      .elseif continueView == "y"
+        je sem
+      .elseif continueView =="N"
+        je result
+      .elseif continueView =="n"
+        je result
+      .endif
+      call ClearScreen
+      invoke StdOut, addr wrongValue
+      jmp ftyfs
+      ret
+         
+; Display the second semester
+ftyss:
+      call ClearScreen
+      invoke StdOut, addr border0
+      invoke StdOut, addr header0
+      invoke StdOut, addr border1
+      invoke StdOut, addr header1
+      invoke StdOut, addr border2
+      invoke StdOut, addr header2
+      invoke StdOut, addr border3
+
       invoke StdOut, addr border93
       invoke StdOut, addr yearFourSecondSem
       invoke StdOut, addr border94
@@ -412,7 +823,31 @@ start:
       invoke StdOut, addr border98
       invoke StdOut, addr total8
       invoke StdOut, addr border99
- invoke ExitProcess, 0
+
+      invoke StdOut, addr enterContinueView
+      invoke StdIn, addr continueView, 10
+
+      .if continueView =="Y"
+        je sem
+      .elseif continueView == "y"
+        je sem
+      .elseif continueView =="N"
+        je result
+      .elseif continueView =="n"
+        je result
+      .endif
+      call ClearScreen
+      invoke StdOut, addr wrongValue
+      jmp ftyss
+      ret
 
 
+;=================================================================================
+
+call ClearScreen
+jmp result
+
+exitProgram: 
+    invoke ExitProcess, 0
 end start
+

@@ -12,6 +12,7 @@ includelib \masm32\lib\user32.lib
 includelib \masm32\lib\masm32.lib
 
 .data
+newline db 13,10,0
 border0 db 9, "----------------------------------------------------------------------------------------------------------------------------------------------", 0
 header0 db 10, 9, "| College/Department |                       COLLEGE OF BUSINESS ADMINISTRATION EDUCATION                      | Reference   | CMO 39, 2021  |", 0
 border1 db 10, 9,"----------------------------------------------------------------------------------------------------------------------------------------------", 0
@@ -466,21 +467,30 @@ enterContinueView db 10,"Do you want to view another year and sem? [Y / N] -: ",
 enroll db 50 dup(?)
 viewEnroll db 10,"TO ENROLL: ADD (CODE)  | DELETE SUBJECT: DEL (CODE) | CONFIRM: CONFIRM",10,"-: ",0
 
+;FORM 1 INFO 
+
+;=======================================
+
+getName db 10,"Name: ", 0
+getStudCode db 10, "Student Code: ", 0
+getYear db 10, "Year: ",0
+getSemester db 10, "Semester: ", 0
+formstring1 db "      Title      | Description                                                         |  Units  |",0     
+formstring2 db "--------------------------------------------------------------------------------------------------",0
+formstring3 db "                 |                                                                     |         |",0
+formstring4 db "                 |                                                                     |         |",0 
+formstring5 db "                 |                                                                     |         |",0 
+formstring6 db "                 |                                                                     |         |",0 
+formstring7 db "                 |                                                                     |         |",0 
+formstring8 db "                 |                                                                     |         |",0 
+formstring9 db "                 |                                                                     |         |",0  
+formstring10 db "--------------------------------------------------------------------------------------------------",0
+formstringtotal db 9,9, "Total Enrolled Units                                                                          |   ", 0
+formstringend db "   |",0
+
+
+
 .code
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -775,14 +785,12 @@ efyfs:
         mov eax, totalUnits
         add eax, NSTP1
         mov totalUnits, eax
-        
-    .endif
 
 
     ; DELETING SUBJECT
     ; ===========================
 
-    .if eACCBP100 == 1 && enroll[0] == "D" && enroll[1] == "E" && enroll[2] == "L" && enroll[3] == " " && enroll[4] == "A" && enroll[5] == "C" && enroll[6] == "C" && enroll[7] == "B" && enroll[8] == "P" && enroll[9] == "1" && enroll[10] == "0" && enroll[11] == "0" 
+    .elseif eACCBP100 == 1 && enroll[0] == "D" && enroll[1] == "E" && enroll[2] == "L" && enroll[3] == " " && enroll[4] == "A" && enroll[5] == "C" && enroll[6] == "C" && enroll[7] == "B" && enroll[8] == "P" && enroll[9] == "1" && enroll[10] == "0" && enroll[11] == "0" 
         mov eACCBP100, 0
         mov eax, totalUnits
         sub eax, ACCBP100
@@ -829,9 +837,10 @@ efyfs:
         mov eax, totalUnits
         sub eax, NSTP1
         mov totalUnits, eax
-        
+    
+    .elseif enroll[0] == "C" && enroll[1] == "O" && enroll[2] == "N" && enroll[3] == "F" && enroll[4] == "I" && enroll[5] == "R" && enroll[6] == "M"
+        je confirmfyfs
     .endif
-
     
     call ClearScreen
     jmp efyfs
@@ -964,13 +973,10 @@ efyss:
         add eax, NSTP2
         mov totalUnits, eax
         
-    .endif
-
-
     ; DELETING SUBJECT
     ; ===========================
 
-    .if eGE1 == 1 && enroll[0] == "D" && enroll[1] == "E" && enroll[2] == "L" && enroll[3] == " " && enroll[4] == "G" && enroll[5] == "E" && enroll[6] == "1" 
+    .elseif eGE1 == 1 && enroll[0] == "D" && enroll[1] == "E" && enroll[2] == "L" && enroll[3] == " " && enroll[4] == "G" && enroll[5] == "E" && enroll[6] == "1" 
         mov eGE1, 0
         mov eax, totalUnits
         sub eax, GE1
@@ -1017,11 +1023,10 @@ efyss:
         mov eax, totalUnits
         sub eax, NSTP2
         mov totalUnits, eax
-        
+    .elseif enroll[0] == "C" && enroll[1] == "O" && enroll[2] == "N" && enroll[3] == "F" && enroll[4] == "I" && enroll[5] == "R" && enroll[6] == "M"
+        je confirmfyss
     .endif
-
-
-
+        
     call ClearScreen
     jmp efyss
     ret
@@ -1167,13 +1172,10 @@ esyfs:
         add eax, REM215
         mov totalUnits, eax
           
-    .endif
-
-
     ; DELETING SUBJECT
     ; ===========================
 
-    .if eREM123 == 1 && enroll[0] == "D" && enroll[1] == "E" && enroll[2] == "L" && enroll[3] == " " && enroll[4] == "R" && enroll[5] == "E" && enroll[6] == "M" && enroll[7] == "1" && enroll[8] == "2" && enroll[9] == "3"
+    .elseif eREM123 == 1 && enroll[0] == "D" && enroll[1] == "E" && enroll[2] == "L" && enroll[3] == " " && enroll[4] == "R" && enroll[5] == "E" && enroll[6] == "M" && enroll[7] == "1" && enroll[8] == "2" && enroll[9] == "3"
         mov eREM123, 0
         mov eax, totalUnits
         sub eax, REM123
@@ -1226,8 +1228,10 @@ esyfs:
         mov eax, totalUnits
         sub eax, REM215
         mov totalUnits, eax
-          
+    .elseif enroll[0] == "C" && enroll[1] == "O" && enroll[2] == "N" && enroll[3] == "F" && enroll[4] == "I" && enroll[5] == "R" && enroll[6] == "M"
+        je confirmsyfs
     .endif
+          
 
 
 
@@ -1367,14 +1371,12 @@ esyss:
         add eax, PAHF4
         mov totalUnits, eax
 
-          
-    .endif
-
+     
 
     ; DELETING SUBJECT
     ; ===========================
 
-    .if eREM216 == 1 && enroll[0] == "D" && enroll[1] == "E" && enroll[2] == "L" && enroll[3] == " " && enroll[4] == "R" && enroll[5] == "E" && enroll[6] == "M" && enroll[7] == "2" && enroll[8] == "1" && enroll[9] == "6"
+    .elseif eREM216 == 1 && enroll[0] == "D" && enroll[1] == "E" && enroll[2] == "L" && enroll[3] == " " && enroll[4] == "R" && enroll[5] == "E" && enroll[6] == "M" && enroll[7] == "2" && enroll[8] == "1" && enroll[9] == "6"
         mov eREM216, 0
         mov eax, totalUnits
         sub eax, REM216
@@ -1428,7 +1430,8 @@ esyss:
         sub eax, PAHF4
         mov totalUnits, eax
 
-          
+    .elseif enroll[0] == "C" && enroll[1] == "O" && enroll[2] == "N" && enroll[3] == "F" && enroll[4] == "I" && enroll[5] == "R" && enroll[6] == "M"
+        je confirmsyss
     .endif
 
 
@@ -1574,15 +1577,12 @@ etyfs:
           mov eax, totalUnits
           add eax, REM329
           mov totalUnits, eax
-  
-            
-      .endif
-  
+
   
       ; DELETING SUBJECT
       ; ===========================
   
-      .if eGE7 == 1 && enroll[0] == "D" && enroll[1] == "E" && enroll[2] == "L" && enroll[3] == " " && enroll[4] == "G" && enroll[5] == "E" && enroll[6] == "7"
+      .elseif eGE7 == 1 && enroll[0] == "D" && enroll[1] == "E" && enroll[2] == "L" && enroll[3] == " " && enroll[4] == "G" && enroll[5] == "E" && enroll[6] == "7"
           mov eGE7, 0
           mov eax, totalUnits
           sub eax, GE7
@@ -1635,9 +1635,9 @@ etyfs:
           mov eax, totalUnits
           sub eax, REM329
           mov totalUnits, eax          
-      .endif
-
-
+    .elseif enroll[0] == "C" && enroll[1] == "O" && enroll[2] == "N" && enroll[3] == "F" && enroll[4] == "I" && enroll[5] == "R" && enroll[6] == "M"
+        je confirmtyfs
+    .endif
 
       jmp etyfs
       ret
@@ -1756,14 +1756,12 @@ etyss:
           add eax, REM332
           mov totalUnits, eax
   
-            
-      .endif
-  
+    
   
       ; DELETING SUBJECT
       ; ===========================
   
-      .if eGE9 == 1 && enroll[0] == "D" && enroll[1] == "E" && enroll[2] == "L" && enroll[3] == " " && enroll[4] == "G" && enroll[5] == "E" && enroll[6] == "9"
+      .elseif eGE9 == 1 && enroll[0] == "D" && enroll[1] == "E" && enroll[2] == "L" && enroll[3] == " " && enroll[4] == "G" && enroll[5] == "E" && enroll[6] == "9"
           mov eGE9, 0
           mov eax, totalUnits
           sub eax, GE9
@@ -1805,9 +1803,9 @@ etyss:
           sub eax, REM332
           mov totalUnits, eax
   
-            
-      .endif
-
+     .elseif enroll[0] == "C" && enroll[1] == "O" && enroll[2] == "N" && enroll[3] == "F" && enroll[4] == "I" && enroll[5] == "R" && enroll[6] == "M"
+        je confirmtyss
+    .endif
 
 
       jmp etyss
@@ -1978,13 +1976,11 @@ eftyfs:
           mov totalUnits, eax
   
             
-      .endif
-  
   
       ; DELETING SUBJECT
       ; ===========================
   
-      .if eGE20 == 1 && enroll[0] == "D" && enroll[1] == "E" && enroll[2] == "L" && enroll[3] == " " && enroll[4] == "G" && enroll[5] == "E" && enroll[6] == "2" && enroll[7] == "0"
+      .elseif eGE20 == 1 && enroll[0] == "D" && enroll[1] == "E" && enroll[2] == "L" && enroll[3] == " " && enroll[4] == "G" && enroll[5] == "E" && enroll[6] == "2" && enroll[7] == "0"
           mov eGE20, 0
           mov eax, totalUnits
           sub eax, GE20
@@ -2019,12 +2015,11 @@ eftyfs:
           mov eax, totalUnits
           sub eax, REM331
           mov totalUnits, eax
-  
             
-      .endif
-
-
-
+    .elseif enroll[0] == "C" && enroll[1] == "O" && enroll[2] == "N" && enroll[3] == "F" && enroll[4] == "I" && enroll[5] == "R" && enroll[6] == "M"
+        je confirmfoyfs
+        
+    .endif
       jmp eftyfs
       ret
 
@@ -2094,15 +2089,11 @@ eftyss:
           add eax, REM403
           mov totalUnits, eax
           
-
-            
-      .endif
-  
   
       ; DELETING SUBJECT
       ; ===========================
   
-      .if eREM401 == 1 && enroll[0] == "D" && enroll[1] == "E" && enroll[2] == "L" && enroll[3] == " " && enroll[4] == "R" && enroll[5] == "E" && enroll[6] == "M" && enroll[7] == "4" && enroll[8] == "0" && enroll[9] == "1"
+      .elseif eREM401 == 1 && enroll[0] == "D" && enroll[1] == "E" && enroll[2] == "L" && enroll[3] == " " && enroll[4] == "R" && enroll[5] == "E" && enroll[6] == "M" && enroll[7] == "4" && enroll[8] == "0" && enroll[9] == "1"
           mov eREM401, 0
           mov eax, totalUnits
           sub eax, REM401
@@ -2120,10 +2111,9 @@ eftyss:
           sub eax, REM403
           mov totalUnits, eax
           
-
-            
-      .endif
-
+    .elseif enroll[0] == "C" && enroll[1] == "O" && enroll[2] == "N" && enroll[3] == "F" && enroll[4] == "I" && enroll[5] == "R" && enroll[6] == "M"
+        je confirmfoyss
+    .endif
 
       jmp eftyss
       ret
@@ -2589,16 +2579,452 @@ ftyss:
 
 
 ;=================================================================================
-confirm:
+confirmfyfs:
     call ClearScreen
-    invoke dwtoa, totalUnits, addr totalU
-    invoke StdOut, addr totalU
+
+    invoke StdOut, addr getName
+    invoke StdOut, addr fname
+    invoke StdOut, addr getStudCode
+    invoke StdOut, addr schoolID
+    invoke StdOut, addr getYear
+    invoke StdOut, addr year
+    invoke StdOut, addr getSemester
+    invoke StdOut, addr semester
+    invoke StdOut, addr newline
+    invoke StdOut, addr txt1
+    invoke StdOut, addr border7
+      .if eACCBP100 == 1
+                        invoke StdOut, addr fyfsSub1
+                        invoke StdOut, addr newline
+                    .endif
+                    
+                    .if eGE8 == 1
+                        invoke StdOut, addr fyfsSub2
+                        invoke StdOut, addr newline
+                    .endif
+                    
+                    .if eGE2 == 1
+                        invoke StdOut, addr fyfsSub3
+                        invoke StdOut, addr newline
+                    .endif
+                    .if eGE15 == 1
+                        invoke StdOut, addr fyfsSub4
+                        invoke StdOut, addr newline
+                    .endif
+                    .if eGE3 == 1
+                        invoke StdOut, addr fyfsSub5
+                        invoke StdOut, addr newline
+                    .endif
+                    .if eBA100 == 1
+                        invoke StdOut, addr fyfsSub6
+                        invoke StdOut, addr newline
+                    .endif
+                    .if ePAHF1 == 1
+                        invoke StdOut, addr fyfsSub7
+                        invoke StdOut, addr newline
+                    .endif
+                     .if eNSTP1 == 1
+                        invoke StdOut, addr fyfsSub8
+                        invoke StdOut, addr newline
+                    .endif
+    invoke StdOut, addr border7
+    invoke StdOut, addr newline
+    invoke StdOut, addr formstringtotal
+    invoke dwtoa, totalUnits, addr totalUnits
+    invoke StdOut, addr totalUnits  
+    invoke StdOut, addr newline
     ret
 ;=================================================================================
+
+
+;=================================================================================
+confirmfyss:
+    call ClearScreen
+
+    invoke StdOut, addr getName
+    invoke StdOut, addr fname
+    invoke StdOut, addr getStudCode
+    invoke StdOut, addr schoolID
+    invoke StdOut, addr getYear
+    invoke StdOut, addr year
+    invoke StdOut, addr getSemester
+    invoke StdOut, addr semester
+    invoke StdOut, addr newline
+    invoke StdOut, addr txt1
+    invoke StdOut, addr border7
+      .if eGE1 == 1
+                        invoke StdOut, addr fyssSub1
+                        invoke StdOut, addr newline
+                    .endif
+                    
+                    .if eGE5 == 1
+                        invoke StdOut, addr fyssSub2
+                        invoke StdOut, addr newline
+                    .endif
+                    
+                    .if eUGE1 == 1
+                        invoke StdOut, addr fyssSub3
+                        invoke StdOut, addr newline
+                    .endif
+                    .if eGE4 == 1
+                        invoke StdOut, addr fyssSub4
+                        invoke StdOut, addr newline
+                    .endif
+                    .if eREM112 == 1
+                        invoke StdOut, addr fyssSub5
+                        invoke StdOut, addr newline
+                    .endif
+                    .if eREM122 == 1
+                        invoke StdOut, addr fyssSub6
+                        invoke StdOut, addr newline
+                    .endif
+                    .if ePAHF2 == 1
+                        invoke StdOut, addr fyssSub7
+                        invoke StdOut, addr newline
+                    .endif
+                     .if eNSTP2 == 1
+                        invoke StdOut, addr fyssSub8
+                        invoke StdOut, addr newline
+                    .endif
+    invoke StdOut, addr border7
+    invoke StdOut, addr newline
+    invoke StdOut, addr formstringtotal
+    invoke dwtoa, totalUnits, addr totalUnits
+    invoke StdOut, addr totalUnits  
+    invoke StdOut, addr newline
+    ret
+;=================================================================================
+
+;=================================================================================
+confirmsyfs:
+    call ClearScreen
+
+    invoke StdOut, addr getName
+    invoke StdOut, addr fname
+    invoke StdOut, addr getStudCode
+    invoke StdOut, addr schoolID
+    invoke StdOut, addr getYear
+    invoke StdOut, addr year
+    invoke StdOut, addr getSemester
+    invoke StdOut, addr semester
+    invoke StdOut, addr newline
+    invoke StdOut, addr txt1
+    invoke StdOut, addr border7
+      .if eREM123 == 1
+                        invoke StdOut, addr syfsSub1
+                        invoke StdOut, addr newline
+                    .endif
+                    
+                    .if eREM328 == 1
+                        invoke StdOut, addr syfsSub2
+                        invoke StdOut, addr newline
+                    .endif
+                    
+                    .if eBAHR213 == 1
+                        invoke StdOut, addr syfsSub3
+                        invoke StdOut, addr newline
+                    .endif
+                    .if eREM12L == 1
+                        invoke StdOut, addr syfsSub4
+                        invoke StdOut, addr newline
+                    .endif
+                    .if eTAX101 == 1
+                        invoke StdOut, addr syfsSub5
+                        invoke StdOut, addr newline
+                    .endif
+                    .if eLAW103 == 1
+                        invoke StdOut, addr syfsSub6
+                        invoke StdOut, addr newline
+                    .endif
+                    .if eGE11 == 1
+                        invoke StdOut, addr syfsSub7
+                        invoke StdOut, addr newline
+                    .endif
+                     .if eREM215 == 1
+                        invoke StdOut, addr syfsSub8
+                        invoke StdOut, addr newline
+                     .endif
+                     .if ePAHF3 == 1
+                        invoke StdOut, addr syfsSub9
+                        invoke StdOut, addr newline
+                    .endif
+    invoke StdOut, addr border7
+    invoke StdOut, addr newline
+    invoke StdOut, addr formstringtotal
+    invoke dwtoa, totalUnits, addr totalUnits
+    invoke StdOut, addr totalUnits  
+    invoke StdOut, addr newline
+    ret
+;=================================================================================
+
+;=================================================================================
+confirmsyss:
+    call ClearScreen
+
+    invoke StdOut, addr getName
+    invoke StdOut, addr fname
+    invoke StdOut, addr getStudCode
+    invoke StdOut, addr schoolID
+    invoke StdOut, addr getYear
+    invoke StdOut, addr year
+    invoke StdOut, addr getSemester
+    invoke StdOut, addr semester
+    invoke StdOut, addr newline
+    invoke StdOut, addr txt1
+    invoke StdOut, addr border7
+      .if eREM216 == 1
+                        invoke StdOut, addr syssSub1
+                        invoke StdOut, addr newline
+                    .endif
+                    
+                    .if eUGE2 == 1
+                        invoke StdOut, addr syssSub2
+                        invoke StdOut, addr newline
+                    .endif
+                    
+                    .if eGE6 == 1
+                        invoke StdOut, addr syssSub3
+                        invoke StdOut, addr newline
+                    .endif
+                    .if eREM221 == 1
+                        invoke StdOut, addr syssSub4
+                        invoke StdOut, addr newline
+                    .endif
+                    .if eLAW104 == 1
+                        invoke StdOut, addr syssSub5
+                        invoke StdOut, addr newline
+                    .endif
+                    .if eREM214 == 1
+                        invoke StdOut, addr syssSub6
+                        invoke StdOut, addr newline
+                    .endif
+                    .if eREM311 == 1
+                        invoke StdOut, addr syssSub7
+                        invoke StdOut, addr newline
+                    .endif
+                     .if ePAHF4 == 1
+                        invoke StdOut, addr syssSub8
+                        invoke StdOut, addr newline
+                    .endif
+    invoke StdOut, addr border7
+    invoke StdOut, addr newline
+    invoke StdOut, addr formstringtotal
+    invoke dwtoa, totalUnits, addr totalUnits
+    invoke StdOut, addr totalUnits  
+    invoke StdOut, addr newline
+    ret
+;=================================================================================
+
+;=================================================================================
+confirmtyfs:
+    call ClearScreen
+
+    invoke StdOut, addr getName
+    invoke StdOut, addr fname
+    invoke StdOut, addr getStudCode
+    invoke StdOut, addr schoolID
+    invoke StdOut, addr getYear
+    invoke StdOut, addr year
+    invoke StdOut, addr getSemester
+    invoke StdOut, addr semester
+    invoke StdOut, addr newline
+    invoke StdOut, addr txt1
+    invoke StdOut, addr border7
+      .if eGE7 == 1
+                        invoke StdOut, addr tyfsSub1
+                        invoke StdOut, addr newline
+                    .endif
+                    
+                    .if eREM319 == 1
+                        invoke StdOut, addr tyfsSub2
+                        invoke StdOut, addr newline
+                    .endif
+                    
+                    .if eREM327 == 1
+                        invoke StdOut, addr tyfsSub3
+                        invoke StdOut, addr newline
+                    .endif
+                    .if eREM321 == 1
+                        invoke StdOut, addr tyfsSub4
+                        invoke StdOut, addr newline
+                    .endif
+                    .if eREM322 == 1
+                        invoke StdOut, addr tyfsSub5
+                        invoke StdOut, addr newline
+                    .endif
+                    .if eREM323 == 1
+                        invoke StdOut, addr tyfsSub6
+                        invoke StdOut, addr newline
+                    .endif
+                    .if eLAW105 == 1
+                        invoke StdOut, addr tyfsSub7
+                        invoke StdOut, addr newline
+                    .endif
+                     .if eREM222 == 1
+                        invoke StdOut, addr tyfsSub8
+                        invoke StdOut, addr newline
+                    .endif
+                    .if eREM329 == 1
+                        invoke StdOut, addr tyfsSub8
+                        invoke StdOut, addr newline
+                    .endif
+
+    invoke StdOut, addr border7
+    invoke StdOut, addr newline
+    invoke StdOut, addr formstringtotal
+    invoke dwtoa, totalUnits, addr totalUnits
+    invoke StdOut, addr totalUnits  
+    invoke StdOut, addr newline
+    ret
+;=================================================================================
+
+;=================================================================================
+confirmtyss:
+    call ClearScreen
+
+    invoke StdOut, addr getName
+    invoke StdOut, addr fname
+    invoke StdOut, addr getStudCode
+    invoke StdOut, addr schoolID
+    invoke StdOut, addr getYear
+    invoke StdOut, addr year
+    invoke StdOut, addr getSemester
+    invoke StdOut, addr semester
+    invoke StdOut, addr newline
+    invoke StdOut, addr txt1
+    invoke StdOut, addr border7
+      .if eGE9 == 1
+                        invoke StdOut, addr tySsSub1
+                        invoke StdOut, addr newline
+                    .endif
+                    
+                    .if eREM325 == 1
+                        invoke StdOut, addr tySsSub2
+                        invoke StdOut, addr newline
+                    .endif
+                    
+                    .if eREM324 == 1
+                        invoke StdOut, addr tySsSub3
+                        invoke StdOut, addr newline
+                    .endif
+                    .if eREM326 == 1
+                        invoke StdOut, addr tySsSub4
+                        invoke StdOut, addr newline
+                    .endif
+                    .if eREM320 == 1
+                        invoke StdOut, addr tySsSub5
+                        invoke StdOut, addr newline
+                    .endif
+                    .if eREM312 == 1
+                        invoke StdOut, addr tySsSub6
+                        invoke StdOut, addr newline
+                    .endif
+                    .if eREM332 == 1
+                        invoke StdOut, addr tySsSub7
+                        invoke StdOut, addr newline
+                    .endif
+    invoke StdOut, addr border7
+    invoke StdOut, addr newline
+    invoke StdOut, addr formstringtotal
+    invoke dwtoa, totalUnits, addr totalUnits
+    invoke StdOut, addr totalUnits  
+    invoke StdOut, addr newline
+    ret
+;=================================================================================
+
+;=================================================================================
+confirmfoyfs:
+    call ClearScreen
+
+    invoke StdOut, addr getName
+    invoke StdOut, addr fname
+    invoke StdOut, addr getStudCode
+    invoke StdOut, addr schoolID
+    invoke StdOut, addr getYear
+    invoke StdOut, addr year
+    invoke StdOut, addr getSemester
+    invoke StdOut, addr semester
+    invoke StdOut, addr newline
+    invoke StdOut, addr txt1
+    invoke StdOut, addr border7
+      .if eGE20 == 1
+                        invoke StdOut, addr fourthfsSub1
+                        invoke StdOut, addr newline
+                    .endif
+                    
+                    .if eCAED500C == 1
+                        invoke StdOut, addr fourthfsSub2
+                        invoke StdOut, addr newline
+                    .endif
+                    
+                    .if eREM419 == 1
+                        invoke StdOut, addr fourthfsSub3
+                        invoke StdOut, addr newline
+                    .endif
+                    .if eREM413 == 1
+                        invoke StdOut, addr fourthfsSub4
+                        invoke StdOut, addr newline
+                    .endif
+                    .if eREM411 == 1
+                        invoke StdOut, addr fourthfsSub5
+                        invoke StdOut, addr newline
+                    .endif
+                    .if eREM331 == 1
+                        invoke StdOut, addr fourthfsSub6
+                        invoke StdOut, addr newline
+                    .endif
+    invoke StdOut, addr border7
+    invoke StdOut, addr newline
+    invoke StdOut, addr formstringtotal
+    invoke dwtoa, totalUnits, addr totalUnits
+    invoke StdOut, addr totalUnits  
+    invoke StdOut, addr newline
+    ret
+;=================================================================================
+
+;=================================================================================
+confirmfoyss:
+    call ClearScreen
+
+    invoke StdOut, addr getName
+    invoke StdOut, addr fname
+    invoke StdOut, addr getStudCode
+    invoke StdOut, addr schoolID
+    invoke StdOut, addr getYear
+    invoke StdOut, addr year
+    invoke StdOut, addr getSemester
+    invoke StdOut, addr semester
+    invoke StdOut, addr newline
+    invoke StdOut, addr txt1
+    invoke StdOut, addr border7
+      .if eREM401 == 1
+                        invoke StdOut, addr fourthSsSub1
+                        invoke StdOut, addr newline
+                    .endif
+                    
+                    .if eREM402 == 1
+                        invoke StdOut, addr fourthSsSub2
+                        invoke StdOut, addr newline
+                    .endif
+                    
+                    .if eREM403 == 1
+                        invoke StdOut, addr fourthSsSub3
+                        invoke StdOut, addr newline
+                    .endif
+    invoke StdOut, addr border7
+    invoke StdOut, addr newline
+    invoke StdOut, addr formstringtotal
+    invoke dwtoa, totalUnits, addr totalUnits
+    invoke StdOut, addr totalUnits  
+    invoke StdOut, addr newline
+    ret
+;=================================================================================
+
 call ClearScreen
 jmp result
 
 exitProgram: 
     invoke ExitProcess, 0
 end start
+
 

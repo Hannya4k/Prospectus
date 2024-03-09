@@ -460,6 +460,18 @@ continueView db 50 dup(?)
 enterContinueView db 10,"Do you want to view another year and sem? [Y / N] -: ",0
 
 
+;PROMPTING QUESTION
+;==============================
+
+enterSemesterQuery db 10, "Following Legend",10,10, "To Enter First Year -: Enter [1] on year ", 10,10, 9,9,"To Enter First Semester -: Enter [1] on semester", 10, 9,9,"To Enter Second Semester -: Enter [2] on semester",10,10,
+"To Enter Second Year -: Enter [2] on year ", 10,10, 9,9,"To Enter First Semester -: Enter [1] on semester", 10, 9,9,"To Enter Second Semester -: Enter [2] on semester",10,0,
+
+enterSemesterQuery2 db 10,"To Enter Third Year -: Enter [3] on year ", 10,10, 9,9,"To Enter First Semester -: Enter [1] on semester", 10, 9,9,"To Enter Second Semester -: Enter [2] on semester", 10, 9,9,"To Enter Summer -: Enter [3] on semester",10,10,
+"To Enter Fourth Year -: Enter [4] on year ", 10,10, 9,9,"To Enter First Semester -: Enter [1] on semester", 10, 9,9,"To Enter Second Semester -: Enter [2] on semester",10,0,
+
+
+
+
 
 ;QUESTION TO ENROLL
 ;==============================
@@ -550,6 +562,8 @@ sem:
     invoke StdOut, addr border0
     invoke StdOut, addr newline
 
+    invoke StdOut, addr enterSemesterQuery
+    invoke StdOut, addr enterSemesterQuery2
     invoke StdOut, addr enterYear
     invoke StdIn, addr year, 3
 
@@ -762,9 +776,9 @@ efyfs:
 
     .if eACCBP100 == 0 && enroll[0] == "A" && enroll[1] == "D" && enroll[2] == "D" && enroll[3] == " " && enroll[4] == "A" && enroll[5] == "C" && enroll[6] == "C" && enroll[7] == "B" && enroll[8] == "P" && enroll[9] == "1" && enroll[10] == "0" && enroll[11] == "0" 
         mov eACCBP100, 1
-        mov eax, totalUnits
-        add eax, ACCBP100
-        mov totalUnits, eax
+        mov eax, totalUnits              ; make the value of eax to totalUnits
+        add eax, ACCBP100                ; the value of eax will be 3
+        mov totalUnits, eax              ; make the value of totalUnits into eax
         
     .elseif eGE8 == 0 && enroll[0] == "A" && enroll[1] == "D" && enroll[2] == "D" && enroll[3] == " " && enroll[4] == "G" && enroll[5] == "E" && enroll[6] == "8"
         mov eGE8, 1

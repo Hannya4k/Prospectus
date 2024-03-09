@@ -465,7 +465,7 @@ enterContinueView db 10,"Do you want to view another year and sem? [Y / N] -: ",
 ;==============================
 
 enroll db 50 dup(?)
-viewEnroll db 10,"TO ENROLL: ADD (CODE)  | DELETE SUBJECT: DEL (CODE) | CONFIRM: CONFIRM",10,"-: ",0
+viewEnroll db 10,"TO ENROLL: ADD (SUBJECT CODE)  | DELETE SUBJECT: DEL (SUBJECT CODE) | CONFIRM: CONFIRM",10,"-: ",0
 
 ;FORM 1 INFO 
 
@@ -500,6 +500,13 @@ start:
 
 ; INITALIZE NAME QUESTION.
 ;==============================
+invoke StdOut, addr border0
+invoke StdOut, addr header0
+invoke StdOut, addr border1
+invoke StdOut, addr header1
+invoke StdOut, addr newline
+invoke StdOut, addr border0
+invoke StdOut, addr newline
 
 invoke StdOut, addr enterName
 invoke StdIn, addr fname, 50
@@ -511,6 +518,13 @@ invoke StdIn, addr schoolID,50
 ;==============================
 result: 
     call ClearScreen
+    invoke StdOut, addr border0
+    invoke StdOut, addr header0
+    invoke StdOut, addr border1
+    invoke StdOut, addr header1
+    invoke StdOut, addr newline
+    invoke StdOut, addr border0
+    invoke StdOut, addr newline
     invoke StdOut, addr enterChoose
     invoke StdIn, addr choose, 50
 
@@ -528,6 +542,14 @@ result:
 ;==============================
 sem:
     call ClearScreen
+    invoke StdOut, addr border0
+    invoke StdOut, addr header0
+    invoke StdOut, addr border1
+    invoke StdOut, addr header1
+    invoke StdOut, addr newline
+    invoke StdOut, addr border0
+    invoke StdOut, addr newline
+
     invoke StdOut, addr enterYear
     invoke StdIn, addr year, 3
 
@@ -2581,7 +2603,6 @@ ftyss:
 ;=================================================================================
 confirmfyfs:
     call ClearScreen
-
     invoke StdOut, addr getName
     invoke StdOut, addr fname
     invoke StdOut, addr getStudCode
@@ -2590,6 +2611,13 @@ confirmfyfs:
     invoke StdOut, addr year
     invoke StdOut, addr getSemester
     invoke StdOut, addr semester
+    invoke StdOut, addr newline
+    invoke StdOut, addr border0
+    invoke StdOut, addr header0
+    invoke StdOut, addr border1
+    invoke StdOut, addr header1
+    invoke StdOut, addr newline
+    invoke StdOut, addr border0
     invoke StdOut, addr newline
     invoke StdOut, addr txt1
     invoke StdOut, addr border7
@@ -2650,6 +2678,13 @@ confirmfyss:
     invoke StdOut, addr getSemester
     invoke StdOut, addr semester
     invoke StdOut, addr newline
+    invoke StdOut, addr border0
+    invoke StdOut, addr header0
+    invoke StdOut, addr border1
+    invoke StdOut, addr header1
+    invoke StdOut, addr newline
+    invoke StdOut, addr border0
+    invoke StdOut, addr newline
     invoke StdOut, addr txt1
     invoke StdOut, addr border7
       .if eGE1 == 1
@@ -2707,6 +2742,13 @@ confirmsyfs:
     invoke StdOut, addr year
     invoke StdOut, addr getSemester
     invoke StdOut, addr semester
+    invoke StdOut, addr newline
+    invoke StdOut, addr border0
+    invoke StdOut, addr header0
+    invoke StdOut, addr border1
+    invoke StdOut, addr header1
+    invoke StdOut, addr newline
+    invoke StdOut, addr border0
     invoke StdOut, addr newline
     invoke StdOut, addr txt1
     invoke StdOut, addr border7
@@ -2770,6 +2812,13 @@ confirmsyss:
     invoke StdOut, addr getSemester
     invoke StdOut, addr semester
     invoke StdOut, addr newline
+    invoke StdOut, addr border0
+    invoke StdOut, addr header0
+    invoke StdOut, addr border1
+    invoke StdOut, addr header1
+    invoke StdOut, addr newline
+    invoke StdOut, addr border0
+    invoke StdOut, addr newline
     invoke StdOut, addr txt1
     invoke StdOut, addr border7
       .if eREM216 == 1
@@ -2827,6 +2876,13 @@ confirmtyfs:
     invoke StdOut, addr year
     invoke StdOut, addr getSemester
     invoke StdOut, addr semester
+    invoke StdOut, addr newline
+    invoke StdOut, addr border0
+    invoke StdOut, addr header0
+    invoke StdOut, addr border1
+    invoke StdOut, addr header1
+    invoke StdOut, addr newline
+    invoke StdOut, addr border0
     invoke StdOut, addr newline
     invoke StdOut, addr txt1
     invoke StdOut, addr border7
@@ -2891,6 +2947,13 @@ confirmtyss:
     invoke StdOut, addr getSemester
     invoke StdOut, addr semester
     invoke StdOut, addr newline
+    invoke StdOut, addr border0
+    invoke StdOut, addr header0
+    invoke StdOut, addr border1
+    invoke StdOut, addr header1
+    invoke StdOut, addr newline
+    invoke StdOut, addr border0
+    invoke StdOut, addr newline
     invoke StdOut, addr txt1
     invoke StdOut, addr border7
       .if eGE9 == 1
@@ -2945,6 +3008,13 @@ confirmfoyfs:
     invoke StdOut, addr getSemester
     invoke StdOut, addr semester
     invoke StdOut, addr newline
+    invoke StdOut, addr border0
+    invoke StdOut, addr header0
+    invoke StdOut, addr border1
+    invoke StdOut, addr header1
+    invoke StdOut, addr newline
+    invoke StdOut, addr border0
+    invoke StdOut, addr newline
     invoke StdOut, addr txt1
     invoke StdOut, addr border7
       .if eGE20 == 1
@@ -2994,6 +3064,13 @@ confirmfoyss:
     invoke StdOut, addr year
     invoke StdOut, addr getSemester
     invoke StdOut, addr semester
+    invoke StdOut, addr newline
+    invoke StdOut, addr border0
+    invoke StdOut, addr header0
+    invoke StdOut, addr border1
+    invoke StdOut, addr header1
+    invoke StdOut, addr newline
+    invoke StdOut, addr border0
     invoke StdOut, addr newline
     invoke StdOut, addr txt1
     invoke StdOut, addr border7
